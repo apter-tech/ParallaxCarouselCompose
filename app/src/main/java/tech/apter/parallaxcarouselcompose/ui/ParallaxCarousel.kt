@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import tech.apter.parallaxcarouselcompose.R
+import kotlin.math.roundToInt
 
 // Padding values
 private val cardPadding = 25.dp
@@ -66,15 +67,15 @@ fun ParallaxCarousel() {
     // Calculate the height for the pager
     val pagerHeight = screenHeight / 1.5f
 
-    // HorizontalPager composable
+    // HorizontalPager composable: Swiping through images
     HorizontalPager(
         state = pagerState,
         modifier = Modifier
             .fillMaxWidth()
             .height(pagerHeight),
     ) { page ->
-        val currentPageOffset = pagerState.getOffsetFractionForPage(page)
-        val parallaxOffset = currentPageOffset * screenWidth.value
+        // Calculate the parallax offset for the current page
+        val parallaxOffset = pagerState.getOffsetFractionForPage(page) * screenWidth.value
 
         // Call ParallaxCarouselItem with image resource and parameters
         ParallaxCarouselItem(
@@ -154,4 +155,4 @@ private fun ImageBitmap.calculateDrawSize(density: Float, screenWidth: Dp, pager
 }
 
 // Extension function to convert Float to Int in pixels
-private fun Float.toIntPx(density: Float) = (this * density).toInt()
+private fun Float.toIntPx(density: Float) = (this * density).roundToInt()
